@@ -1,0 +1,99 @@
+.file-upload {
+
+    border: 2px dashed #d1d5db;
+
+    border-radius: 12px;
+
+    padding: 24px;
+
+    text-align: center;
+
+    transition: .2s;
+
+}
+
+.file-upload:hover {
+
+    border-color: #2563eb;
+
+}
+
+.file-upload.has-error {
+
+    border-color: #dc2626;
+
+}
+
+.file-upload.disabled {
+
+    opacity: .6;
+
+    pointer-events: none;
+
+}
+
+.file-upload label {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+}
+
+.preview {
+
+    position: relative;
+
+}
+
+.preview img {
+
+    width: 100%;
+
+    max-height: 240px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+}
+
+.preview button {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    width: 36px;
+
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #dc2626;
+
+    color: white;
+
+    cursor: pointer;
+
+}
+
+.file-upload p {
+
+    margin-top: 12px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+}

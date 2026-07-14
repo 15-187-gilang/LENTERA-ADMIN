@@ -1,0 +1,39 @@
+.category-table-row {
+    transition: background-color 0.2s ease;
+}
+
+.category-table-row:hover {
+    background-color: #f9fafb;
+}
+
+.category-table-row td {
+    padding: 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.category-table-row .category-name {
+    font-weight: 600;
+    color: #111827;
+}
+
+.category-table-row .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.category-table-row .action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.category-table-row .text-center {
+    text-align: center;
+}

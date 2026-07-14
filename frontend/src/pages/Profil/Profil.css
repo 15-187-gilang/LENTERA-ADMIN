@@ -1,0 +1,98 @@
+/* ============================================================
+   Profil Page — Styles
+   ============================================================ */
+
+/* Stack utama halaman */
+.profil-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ----- Panel override untuk profil ----- */
+
+.profil-panel-header-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 24px 0;
+}
+
+.profil-panel-icon-container {
+    width: 48px;
+    height: 48px;
+    background-color: #eff6ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profil-panel-icon {
+    color: #2563eb;
+    width: 24px;
+    height: 24px;
+}
+
+.profil-panel-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px;
+}
+
+.profil-panel-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.profil-panel__body {
+    padding: 24px;
+}
+
+/* ----- Loading Skeleton ----- */
+
+.profil-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.skeleton-block {
+    height: 220px;
+    background: linear-gradient(
+        90deg,
+        #f3f4f6 25%,
+        #e5e7eb 50%,
+        #f3f4f6 75%
+    );
+    background-size: 200% 100%;
+    border-radius: 14px;
+    animation: skeleton-shimmer 1.4s infinite;
+}
+
+.skeleton-block--short {
+    height: 200px;
+}
+
+@keyframes skeleton-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ----- Responsive ----- */
+
+@media (max-width: 768px) {
+    .profil-page {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+
+    .profil-panel .panel-header,
+    .profil-panel__body {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

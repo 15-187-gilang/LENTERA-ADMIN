@@ -1,0 +1,25 @@
+.empty-state {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    gap: 16px;
+
+    padding: 60px 20px;
+
+    color: #64748b;
+}
+
+.empty-state h2 {
+    color: #1e293b;
+}
+
+.empty-state p {
+    max-width: 420px;
+}

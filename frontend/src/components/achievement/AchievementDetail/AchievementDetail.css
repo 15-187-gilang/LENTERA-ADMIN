@@ -1,0 +1,146 @@
+.achievement-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.detail-card {
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+/* 1. Thumbnail */
+.thumbnail-card {
+    position: relative;
+    background-color: #f3f4f6;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.achievement-detail-thumbnail {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.achievement-detail-no-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #9ca3af;
+    padding: 64px 0;
+}
+
+.thumbnail-title-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+}
+
+.thumbnail-title-overlay h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* 2. Info Grid */
+.info-card h3, .description-card h3 {
+    margin: 0;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 24px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 15px;
+    color: #111827;
+    font-weight: 500;
+}
+
+/* 3. Description */
+.description-content {
+    padding: 24px;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.empty-text {
+    color: #9ca3af;
+    font-style: italic;
+    margin: 0;
+}
+
+/* 4. Metadata */
+.meta-card {
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+}
+
+.meta-grid {
+    display: flex;
+    gap: 32px;
+    padding: 16px 24px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.meta-label {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.meta-value {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .meta-grid {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

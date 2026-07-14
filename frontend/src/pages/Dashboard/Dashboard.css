@@ -1,0 +1,563 @@
+:root,
+body,
+html {
+    background-color: #ffffff !important;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* --- KUSTOMISASI SCROLLBAR --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f4f7fb;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cdd6e5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Reset & Layout Utama */
+.admin-layout {
+    display: flex;
+    height: 100vh; /* Kunci agar tidak melebihi tinggi layar browser */
+    width: 100%;
+    background-color: #ffffff;
+    font-family:
+        system-ui,
+        -apple-system,
+        poppins,
+        sans-serif;
+    color: #111827;
+    overflow: hidden; /* Mencegah seluruh halaman ikut ter-scroll */
+}
+
+/* --- SIDEBAR KIRI & ANIMASI --- */
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+}
+
+.sidebar.closed {
+    width: 80px;
+}
+
+.sidebar.closed .brand-info,
+.sidebar.closed .nav-label,
+.sidebar.closed .nav-item span,
+.sidebar.closed .logout-btn span {
+    display: none;
+}
+
+.sidebar.closed .sidebar-header {
+    justify-content: center;
+    padding: 24px 0;
+}
+
+.sidebar.closed .sidebar-nav {
+    padding: 12px 16px;
+    align-items: center;
+}
+
+.sidebar.closed .nav-item,
+.sidebar.closed .logout-btn {
+    margin: 0 auto 8px auto !important; /* Memastikan tepat di tengah */
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important; /* Mencegah penyusutan */
+    min-height: 44px !important;
+    max-width: 44px !important; /* Mencegah peregangan */
+    max-height: 44px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important; /* Membuang sisa jarak dalam */
+    border-radius: 50% !important; /* Memaksa bentuk lingkaran penuh */
+}
+
+/* --- HEADER SIDEBAR & LOGO --- */
+.sidebar-header {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 88px;
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: max-content;
+}
+
+/* Kustomisasi logo gambar di sidebar */
+.sidebar-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain; /* Memastikan logo tidak penyok */
+    border-radius: 8px; /* Sudut melengkung halus jika logo memiliki latar belakang kotak */
+}
+
+.brand-text h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: 0.5px;
+}
+
+.brand-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.menu-toggle-btn:hover {
+    background-color: #f3f4f6;
+}
+
+/* --- NAVIGASI SIDEBAR --- */
+.sidebar-nav {
+    flex: 1;
+    padding: 12px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    margin-top: 8px;
+    text-align: left;
+    display: block;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+    margin-left: -16px;
+    width: calc(100% + 16px);
+}
+
+.nav-item:hover {
+    background-color: #f3f4f6;
+}
+
+.nav-item.active {
+    background-color: #0c56d0;
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    padding: 24px;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    margin-left: -16px;
+    width: calc(100% + 16px);
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #fef2f2;
+}
+
+/* --- KONTEN UTAMA KANAN --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #e5e7eb;
+    height: 100vh;
+    overflow-y: auto; /* Mengaktifkan scroll HANYA di area konten */
+    position: relative;
+}
+
+/* Header Atas Utama */
+.top-header {
+    height: 88px;
+    min-height: 88px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff; /* Wajib putih agar saat konten di-scroll, tidak tembus pandang */
+    z-index: 50; /* Diperbesar agar selalu menutupi elemen form atau grafik di bawahnya */
+}
+
+/* --- Pengaturan Tombol Menu Khusus Mobile di Header --- */
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu-btn {
+    display: none; /* Sembunyikan secara default di laptop/PC */
+    background: none;
+    border: none;
+    color: #111827;
+    cursor: pointer;
+    margin-right: 16px;
+    padding: 4px;
+}
+
+/* Memunculkan tombol menu di Header saat layar mengecil (HP/Tablet) */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.page-title-area p {
+    margin: 0 0 4px 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0c56d0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.page-title-area h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: #000000;
+    letter-spacing: normal;
+}
+
+/* Area Dashboard Tengah */
+.dashboard-content {
+    padding: 40px;
+    max-width: 100%;
+}
+
+/* Grid Kartu Metrik */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 sejajar di laptop */
+    gap: 24px;
+    margin-bottom: 32px;
+    width: 100%;
+}
+
+.metric-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 24px 16px;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Membawa teks judul ke tengah */
+    justify-content: center;
+    text-align: center;
+}
+
+.metric-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.metric-card .value {
+    margin: 0;
+    font-size: 36px; /* Ukuran angka besar sedikit disesuaikan */
+    font-weight: 800;
+    color: #0c56d0;
+    line-height: 1;
+}
+
+/* Grid Area Grafik Bersebelahan */
+.charts-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+.chart-section {
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 32px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-section h3 {
+    margin: 0 0 24px 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #111827;
+}
+
+/* Grafik Batang (Kiri) */
+.bar-chart-container {
+    flex: 1;
+    min-height: 280px;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 24px 40px 0 40px;
+}
+
+.chart-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    height: 100%;
+    justify-content: flex-end;
+    width: 15%;
+}
+
+.chart-bar {
+    width: 100%;
+    background-color: #0c56d0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.chart-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4b5563;
+}
+
+/* Grafik Donat & Legenda (Kanan) */
+.donut-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    flex: 1;
+}
+
+.donut-chart {
+    width: 220px;
+    height: 220px;
+    border-radius: 32px;
+    background: conic-gradient(
+        #172554 0% 15%,
+        #1e40af 15% 45%,
+        #3b82f6 45% 75%,
+        #60a5fa 75% 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-inner {
+    width: 110px;
+    height: 110px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-inner h4 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0c56d0;
+}
+
+.donut-inner p {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.chart-legend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.legend-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-right {
+    color: #6b7280;
+}
+
+
+/* =========================================
+   PENGATURAN RESPONSIVE LAYOUT ADMIN
+   ========================================= */
+
+/* --- Tablet & Laptop Kecil (Max 1024px) --- */
+@media (max-width: 1024px) {
+    .top-header {
+        padding: 0 24px;
+    }
+    .dashboard-content {
+        padding: 24px;
+    }
+    /* Mengubah metrik jadi 2 kolom di tablet */
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* --- Layar Tablet Vertikal & HP Besar (Max 768px) --- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 999;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        transform: translateX(0);
+    }
+
+    .sidebar.closed {
+        transform: translateX(-100%);
+        width: 260px;
+    }
+
+    .main-content {
+        border-left: none;
+        width: 100%;
+    }
+
+    .top-header {
+        padding: 0 16px;
+        height: 70px;
+        min-height: 70px;
+    }
+
+    .dashboard-content {
+        padding: 16px;
+    }
+
+    /* PAKSA METRIK JADI GRID 2x2 DI HP (ANTI-SLIDE) */
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+
+    .metric-card {
+        padding: 16px 12px;
+    }
+
+    .metric-card h3 {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .metric-card .value {
+        font-size: 28px;
+    }
+}
+
+/* --- Layar HP Kecil (Max 576px) --- */
+@media (max-width: 576px) {
+    .page-title-area h1 {
+        font-size: 20px;
+    }
+    .page-title-area p {
+        font-size: 12px;
+    }
+
+    /* Tetap pertahankan 2 kolom, hanya jaraknya yang dirapatkan */
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px;
+    }
+
+    .metric-card .value {
+        font-size: 24px;
+    }
+}

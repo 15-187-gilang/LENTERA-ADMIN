@@ -1,0 +1,125 @@
+.app-input {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 44px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    padding: 0 14px;
+
+    transition:
+        border-color .2s,
+        box-shadow .2s;
+
+}
+
+.app-input.full-width {
+
+    width: 100%;
+
+}
+
+.app-input:hover {
+
+    border-color: #9ca3af;
+
+}
+
+.app-input:focus-within {
+
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+.app-input.has-error {
+
+    border-color: #dc2626;
+
+}
+
+.app-input.has-error:focus-within {
+
+    box-shadow: 0 0 0 3px rgba(220,38,38,.12);
+
+}
+
+.app-input.is-disabled {
+
+    background: #f9fafb;
+
+    cursor: not-allowed;
+
+    opacity: .7;
+
+}
+
+.app-input input {
+
+    flex: 1;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    font-size: 14px;
+
+    color: #111827;
+
+    font-family: inherit;
+
+}
+
+.app-input input::placeholder {
+
+    color: #9ca3af;
+
+}
+
+.input-left-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    color: #6b7280;
+
+}
+
+.input-right-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+    color: #6b7280;
+
+    padding: 0;
+
+}
+
+.input-right-icon:hover {
+
+    color: #2563eb;
+
+}

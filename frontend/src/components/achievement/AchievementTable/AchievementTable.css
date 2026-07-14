@@ -1,0 +1,134 @@
+.achievement-table-wrapper{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+.achievement-table{
+
+    width:100%;
+
+    min-width:1000px;
+
+    border-collapse:collapse;
+
+}
+
+.achievement-table thead{
+
+    background:#F8FAFC;
+
+}
+
+.achievement-table th{
+
+    padding:16px;
+
+    text-align:left;
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    color:#64748B;
+
+    border-bottom:1px solid #E2E8F0;
+
+    text-transform:uppercase;
+
+    letter-spacing:.04em;
+
+}
+
+.achievement-table th:last-child,
+.achievement-table td:last-child {
+    width: 170px;
+    min-width: 170px;
+    text-align: center;
+}
+
+.achievement-table td{
+
+    padding:18px 16px;
+
+    border-bottom:1px solid #F1F5F9;
+
+    vertical-align:middle;
+
+}
+
+.achievement-table tbody tr{
+
+    transition:.2s;
+
+}
+
+.achievement-table tbody tr:hover{
+
+    background:#FAFBFC;
+
+}
+
+.table-message{
+
+    text-align:center;
+
+    padding:60px 20px !important;
+
+    color:#94A3B8;
+
+    font-size:.95rem;
+
+}
+
+.table-error{
+
+    color:#DC2626;
+
+}
+
+.achievement-table-wrapper{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    border-radius:16px;
+
+}
+
+.achievement-table{
+
+    width:100%;
+
+    min-width:900px;
+
+    border-collapse:collapse;
+
+}
+
+.achievement-table th{
+
+    padding:16px;
+
+    text-align:left;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#64748B;
+
+    border-bottom:1px solid #E2E8F0;
+
+}
+
+.achievement-table td{
+
+    padding:16px;
+
+    border-bottom:1px solid #F1F5F9;
+
+}

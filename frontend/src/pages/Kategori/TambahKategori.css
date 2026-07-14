@@ -1,0 +1,14 @@
+.tambah-kategori-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tambah-kategori-page .page-header {
+    display: flex;
+    align-items: center;
+}
+
+.tambah-kategori-page .form-container {
+    max-width: 800px;
+}

@@ -1,0 +1,73 @@
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.login-layout {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../assets/BPS_Pringsewu.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+/* Put a light white overlay over the background image to make it faded like the design */
+.login-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(244, 247, 251, 0.85);
+    z-index: 1;
+}
+
+/* The slanted blue shape at the bottom */
+.login-bg-shape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    background-color: #3b82f6; /* Blue matching the design */
+    clip-path: polygon(0 40%, 100% 100%, 0% 100%);
+    z-index: 2;
+}
+
+.login-top-logo {
+    position: absolute;
+    top: 24px;
+    left: 32px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+.login-top-logo img {
+    height: 48px;
+    object-fit: contain;
+}
+
+.login-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+}

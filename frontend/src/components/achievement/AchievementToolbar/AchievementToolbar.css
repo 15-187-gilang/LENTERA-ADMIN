@@ -1,0 +1,91 @@
+.achievement-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:24px;
+
+    margin-bottom:24px;
+
+    flex-wrap:wrap;
+
+}
+
+.toolbar-left{
+
+    display:grid;
+
+    grid-template-columns:
+
+        minmax(300px,2fr)
+
+        repeat(3,minmax(160px,1fr));
+
+    gap:16px;
+
+    flex:1;
+
+}
+
+.toolbar-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.toolbar-link{
+
+    text-decoration:none;
+
+}
+
+@media(max-width:992px){
+
+    .achievement-toolbar{
+
+        flex-direction:column;
+
+    }
+
+    .toolbar-left{
+
+        width:100%;
+
+        grid-template-columns:
+
+            repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:640px){
+
+    .toolbar-left{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .toolbar-right{
+
+        width:100%;
+
+        flex-direction:column;
+
+    }
+
+    .toolbar-right>*{
+
+        width:100%;
+
+    }
+
+}
