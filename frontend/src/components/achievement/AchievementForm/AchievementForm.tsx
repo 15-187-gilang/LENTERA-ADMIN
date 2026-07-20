@@ -380,43 +380,6 @@ export default function AchievementForm({
 
             </div>
 
-            <div className="form-section">
-
-                <h3>
-
-                    Pengaturan
-
-                </h3>
-
-                <div className="form-switches">
-
-                    <Switch
-                        disabled={loading}
-                        label="Prestasi Unggulan"
-                        checked={values.featured}
-                        onChange={(event) =>
-                            onChange(
-                                "featured",
-                                event.target.checked
-                            )
-                        }
-                    />
-
-                    <Switch
-                        label="Publikasikan Prestasi"
-                        checked={values.is_published}
-                        onChange={(event) =>
-                            onChange(
-                                "is_published",
-                                event.target.checked
-                            )
-                        }
-                    />
-
-                </div>
-
-            </div>
-
             {/* =======================================================
                 Action
             ======================================================= */}
@@ -433,20 +396,15 @@ export default function AchievementForm({
 
                 </Button>
 
+
+
                 <Button
-                    type="submit"
+                    type="button"
                     disabled={loading}
+                    onClick={() => onSubmit(true)}
                 >
 
-                    {
-
-                        loading
-
-                            ? "Menyimpan..."
-
-                            : submitText
-
-                    }
+                    {loading ? "Menyimpan..." : "Publikasikan Prestasi"}
 
                 </Button>
 

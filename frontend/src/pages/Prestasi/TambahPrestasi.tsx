@@ -100,61 +100,61 @@ export default function TambahPrestasi() {
      * ============================================================
      */
 
-    
+
 
     useEffect(() => {
 
-    async function loadCategories() {
+        async function loadCategories() {
 
-        try {
+            try {
 
-            const response = await categoryApi.list();
+                const response = await categoryApi.list();
 
-            setCategories(response.data);
-
-        }
-
-        catch (error: any) {
-
-            if (error.title || error.description) {
-
-                const validationErrors: Record<string, string> = {};
-
-                Object.entries(error).forEach(
-
-                    ([key, value]) => {
-
-                        validationErrors[key] =
-
-                            Array.isArray(value)
-
-                                ? value[0]
-
-                                : String(value);
-
-                    }
-
-                );
-
-                setErrors(validationErrors);
-
-                return;
+                setCategories(response.data);
 
             }
 
-            toast.error(
+            catch (error: any) {
 
-                "Gagal menambahkan prestasi."
+                if (error.title || error.description) {
 
-            );
+                    const validationErrors: Record<string, string> = {};
+
+                    Object.entries(error).forEach(
+
+                        ([key, value]) => {
+
+                            validationErrors[key] =
+
+                                Array.isArray(value)
+
+                                    ? value[0]
+
+                                    : String(value);
+
+                        }
+
+                    );
+
+                    setErrors(validationErrors);
+
+                    return;
+
+                }
+
+                toast.error(
+
+                    "Gagal menambahkan prestasi."
+
+                );
+
+            }
 
         }
 
-    }
+        loadCategories();
 
-    loadCategories();
-
-}, []);
+    }, []);
 
     /**
      * ============================================================
@@ -193,11 +193,14 @@ export default function TambahPrestasi() {
      * ============================================================
      */
 
-    async function handleSubmit() {
+    async function handleSubmit(isPublishedOverride?: boolean) {
+
+        const finalIsPublished = isPublishedOverride !== undefined ? isPublishedOverride : values.is_published;
+        const currentValues = { ...values, is_published: finalIsPublished };
 
         const validationErrors =
 
-            validateAchievementForm(values);
+            validateAchievementForm(currentValues);
 
         if (
 
@@ -215,29 +218,29 @@ export default function TambahPrestasi() {
 
             await createAchievement({
 
-                category_id: Number(values.category_id),
+                category_id: Number(currentValues.category_id),
 
-                title: values.title,
+                title: currentValues.title,
 
-                recipient: values.recipient,
+                recipient: currentValues.recipient,
 
-                organizer: values.organizer,
+                organizer: currentValues.organizer,
 
-                level: values.level,
+                level: currentValues.level,
 
-                achievement_date: values.achievement_date,
+                achievement_date: currentValues.achievement_date,
 
-                description: values.description,
+                description: currentValues.description,
 
-                featured: values.featured,
+                featured: currentValues.featured,
 
-                is_published: values.is_published,
+                is_published: currentValues.is_published,
 
-                thumbnail: values.thumbnail ?? undefined,
+                thumbnail: currentValues.thumbnail ?? undefined,
 
-                thumbnail_source: values.thumbnail_source,
+                thumbnail_source: currentValues.thumbnail_source,
 
-                thumbnail_media_url: values.thumbnail_media_url ?? undefined,
+                thumbnail_media_url: currentValues.thumbnail_media_url ?? undefined,
 
             });
 

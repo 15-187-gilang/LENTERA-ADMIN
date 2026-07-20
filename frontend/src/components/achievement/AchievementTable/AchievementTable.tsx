@@ -127,8 +127,6 @@ export default function AchievementTable({
 
                         <th>Tanggal</th>
 
-                        <th>Status</th>
-
                         <th>Aksi</th>
 
                     </tr>

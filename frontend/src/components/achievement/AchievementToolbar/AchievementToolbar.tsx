@@ -128,26 +128,6 @@ export default function AchievementToolbar({
 
                 <Select
 
-                    value={published}
-
-                    disabled={loading}
-
-                    options={PUBLISHED_OPTIONS}
-
-                    onChange={(e)=>
-
-                        onPublishedChange(
-
-                            e.target.value
-
-                        )
-
-                    }
-
-                />
-
-                <Select
-
                     value={sort}
 
                     disabled={loading}

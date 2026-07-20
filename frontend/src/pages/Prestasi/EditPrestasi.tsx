@@ -28,7 +28,7 @@ export default function EditPrestasi() {
     const [fetchError, setFetchError] = useState<string | null>(null);
 
     const [categories, setCategories] = useState<Category[]>([]);
-    
+
     // Thumbnail preview URL from backend
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -84,7 +84,7 @@ export default function EditPrestasi() {
                     thumbnail_source: "upload",
                     thumbnail_media_url: null,
                 });
-                
+
                 // Set existing thumbnail for preview
                 setPreviewUrl(data.thumbnail_url);
             } catch (error: any) {
@@ -116,11 +116,14 @@ export default function EditPrestasi() {
         }));
     }
 
-    async function handleSubmit() {
-        const validationErrors = validateAchievementForm(values);
+    async function handleSubmit(isPublishedOverride?: boolean) {
+        const finalIsPublished = isPublishedOverride !== undefined ? isPublishedOverride : values.is_published;
+        const currentValues = { ...values, is_published: finalIsPublished };
+
+        const validationErrors = validateAchievementForm(currentValues);
 
         // Jika errornya hanya di thumbnail, kita abaikan (karena saat edit, thumbnail boleh kosong / menggunakan yang lama)
-        if (validationErrors.thumbnail && !values.thumbnail) {
+        if (validationErrors.thumbnail && !currentValues.thumbnail) {
             delete validationErrors.thumbnail;
         }
 
@@ -131,18 +134,18 @@ export default function EditPrestasi() {
 
         try {
             await updateAchievement(achievementId, {
-                category_id: Number(values.category_id),
-                title: values.title,
-                recipient: values.recipient,
-                organizer: values.organizer,
-                level: values.level,
-                achievement_date: values.achievement_date,
-                description: values.description,
-                featured: values.featured,
-                is_published: values.is_published,
-                thumbnail: values.thumbnail ?? undefined,
-                thumbnail_source: values.thumbnail_source,
-                thumbnail_media_url: values.thumbnail_media_url ?? undefined,
+                category_id: Number(currentValues.category_id),
+                title: currentValues.title,
+                recipient: currentValues.recipient,
+                organizer: currentValues.organizer,
+                level: currentValues.level,
+                achievement_date: currentValues.achievement_date,
+                description: currentValues.description,
+                featured: currentValues.featured,
+                is_published: currentValues.is_published,
+                thumbnail: currentValues.thumbnail ?? undefined,
+                thumbnail_source: currentValues.thumbnail_source,
+                thumbnail_media_url: currentValues.thumbnail_media_url ?? undefined,
             });
 
             toast.success("Prestasi berhasil diperbarui.");

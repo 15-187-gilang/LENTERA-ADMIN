@@ -88,7 +88,7 @@ export interface AchievementFormProps {
         value: AchievementFormValues[K]
     ) => void;
 
-    onSubmit: () => void;
+    onSubmit: (isPublished?: boolean) => void;
 
     onCancel: () => void;
 

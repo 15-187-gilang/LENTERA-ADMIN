@@ -156,18 +156,6 @@ export default function AchievementTableRow({
 
             </td>
 
-            {/* =======================================================
-                Status
-            ======================================================= */}
-
-            <td>
-
-                <Badge
-                    variant="status"
-                    value={achievement.is_published}
-                />
-
-            </td>
 
             {/* =======================================================
                 Action
