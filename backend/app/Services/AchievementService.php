@@ -74,8 +74,25 @@ class AchievementService
             isset($data['thumbnail']) &&
             $data['thumbnail'] !== null
         ) {
-            $data['thumbnail'] = $data['thumbnail']->store(
-                'achievements',
+            if (is_string($data['thumbnail']) && preg_match('/^data:image\/(\w+);base64,/', $data['thumbnail'])) {
+                $image_parts = explode(";base64,", $data['thumbnail']);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $fileName = 'achievements/' . uniqid() . '.' . $image_type;
+                Storage::disk('public')->put($fileName, $image_base64);
+                $data['thumbnail'] = $fileName;
+            } else {
+                $data['thumbnail'] = $data['thumbnail']->store(
+                    'achievements',
+                    'public'
+                );
+            }
+        }
+
+        if (isset($data['attachment']) && $data['attachment'] !== null) {
+            $data['attachment'] = $data['attachment']->store(
+                'attachments',
                 'public'
             );
         }
@@ -141,8 +158,31 @@ class AchievementService
                 }
             }
 
-            $data['thumbnail'] = $data['thumbnail']->store(
-                'achievements',
+            if (is_string($data['thumbnail']) && preg_match('/^data:image\/(\w+);base64,/', $data['thumbnail'])) {
+                $image_parts = explode(";base64,", $data['thumbnail']);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $fileName = 'achievements/' . uniqid() . '.' . $image_type;
+                Storage::disk('public')->put($fileName, $image_base64);
+                $data['thumbnail'] = $fileName;
+            } else {
+                $data['thumbnail'] = $data['thumbnail']->store(
+                    'achievements',
+                    'public'
+                );
+            }
+        }
+
+        if (isset($data['attachment']) && $data['attachment'] !== null) {
+            if (
+                $achievement->attachment &&
+                Storage::disk('public')->exists($achievement->attachment)
+            ) {
+                Storage::disk('public')->delete($achievement->attachment);
+            }
+            $data['attachment'] = $data['attachment']->store(
+                'attachments',
                 'public'
             );
         }
@@ -170,6 +210,12 @@ class AchievementService
             Storage::disk('public')->exists($achievement->thumbnail)
         ) {
             Storage::disk('public')->delete($achievement->thumbnail);
+        }
+        if (
+            $achievement->attachment &&
+            Storage::disk('public')->exists($achievement->attachment)
+        ) {
+            Storage::disk('public')->delete($achievement->attachment);
         }
         $title = $achievement->title;
         $result = $this->achievementRepository->delete($achievement);

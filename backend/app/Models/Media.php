@@ -17,6 +17,8 @@ class Media extends Model
         'directory',
         'path',
         'url',
+        'thumbnail_path',
+        'thumbnail_url',
         'uploaded_by',
     ];
 

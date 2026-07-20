@@ -226,6 +226,8 @@ export interface Media {
 
     url: string;
 
+    thumbnail_url?: string;
+
     uploaded_by: Admin | null;
 
     created_at: string;

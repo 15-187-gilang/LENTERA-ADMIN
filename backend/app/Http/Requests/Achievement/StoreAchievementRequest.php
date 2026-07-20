@@ -74,9 +74,27 @@ class StoreAchievementRequest extends FormRequest
 
             'thumbnail' => [
                 'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:2048',
+                function ($attribute, $value, $fail) {
+                    if (is_string($value)) {
+                        return;
+                    } elseif ($value instanceof \Illuminate\Http\UploadedFile) {
+                        if ($value->getSize() > 4194304) {
+                            $fail('Ukuran thumbnail maksimal 4MB.');
+                        }
+                        if (!in_array(strtolower($value->extension()), ['jpg', 'jpeg', 'png', 'webp'])) {
+                            $fail('Thumbnail harus berupa file gambar (jpg, jpeg, png, webp).');
+                        }
+                    } else {
+                        $fail('Format thumbnail tidak valid.');
+                    }
+                }
+            ],
+
+            'attachment' => [
+                'nullable',
+                'file',
+                'mimes:pdf',
+                'max:5120',
             ],
 
             'thumbnail_source' => [

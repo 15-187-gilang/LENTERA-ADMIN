@@ -1,5 +1,5 @@
 import "./MediaCard.css";
-import { Eye, Link2, Trash2, FileImage } from "lucide-react";
+import { Eye, Link2, Trash2, FileImage, FileText } from "lucide-react";
 import type { Media } from "../../../types/Api";
 import { formatDate } from "../../../utils";
 import Button from "../../common/Button";
@@ -17,6 +17,10 @@ export default function MediaCard({
     onDelete,
     onCopyUrl,
 }: MediaCardProps) {
+    const isImage = media.mime_type?.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp"].includes(media.extension?.toLowerCase() || "");
+    const isPdf = media.extension?.toLowerCase() === "pdf" || media.mime_type === "application/pdf";
+    const previewUrl = media.thumbnail_url || media.url;
+
     return (
         <div className="media-card">
             {/* Preview Area */}
@@ -25,18 +29,27 @@ export default function MediaCard({
                 onClick={() => onPreview(media)}
                 title="Klik untuk melihat pratinjau"
             >
-                <img
-                    src={media.url}
-                    alt={media.original_name}
-                    loading="lazy"
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
-                        (e.target as HTMLImageElement).nextElementSibling?.classList.add("show");
-                    }}
-                />
-                <div className="media-card-placeholder">
-                    <FileImage size={40} />
-                </div>
+                {isImage || (isPdf && media.thumbnail_url) ? (
+                    <>
+                        <img
+                            src={previewUrl}
+                            alt={media.original_name}
+                            loading="lazy"
+                            onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                                (e.target as HTMLImageElement).nextElementSibling?.classList.add("show");
+                            }}
+                        />
+                        <div className="media-card-placeholder">
+                            <FileImage size={40} />
+                        </div>
+                    </>
+                ) : (
+                    <div className="media-card-document">
+                        <FileText size={48} className="document-icon" />
+                        <span className="document-ext">{media.extension?.toUpperCase()}</span>
+                    </div>
+                )}
                 <div className="media-card-overlay">
                     <Eye size={20} />
                 </div>

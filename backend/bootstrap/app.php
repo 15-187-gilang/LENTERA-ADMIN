@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
     ->withMiddleware(function (Middleware $middleware): void {
 
+        // Aktifkan CORS untuk semua API routes
+        $middleware->api(prepend: [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+
         $middleware->redirectGuestsTo(function (Request $request) {
 
             if ($request->expectsJson()) {

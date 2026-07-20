@@ -52,8 +52,9 @@ class MediaController extends Controller
     {
         $admin = $request->user();
         $file  = $request->file('file');
+        $thumbnail = $request->file('thumbnail');
 
-        $media = $this->mediaService->upload($file, $admin->id);
+        $media = $this->mediaService->upload($file, $admin->id, $thumbnail);
 
         return $this->success(
             new MediaResource($media),

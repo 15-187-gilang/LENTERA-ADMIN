@@ -165,22 +165,25 @@ class AchievementRepository implements AchievementRepositoryInterface
     {
         return [
 
-            'total'=>Achievement::count(),
+            'total'         => Achievement::count(),
 
-            'published'=>Achievement::where(
-                'is_published',
-                true
-            )->count(),
+            'published'     => Achievement::where('is_published', true)->count(),
 
-            'draft'=>Achievement::where(
-                'is_published',
-                false
-            )->count(),
+            'draft'         => Achievement::where('is_published', false)->count(),
 
-            'featured'=>Achievement::where(
-                'featured',
-                true
-            )->count(),
+            'featured'      => Achievement::where('featured', true)->count(),
+
+            'national'      => Achievement::where('is_published', true)
+                                ->where('level', 'Nasional')
+                                ->count(),
+
+            'international' => Achievement::where('is_published', true)
+                                ->where('level', 'Internasional')
+                                ->count(),
+
+            'total_achievements' => Achievement::where('is_published', true)->count(),
+
+            'total_categories' => \App\Models\Category::count(),
 
         ];
     }

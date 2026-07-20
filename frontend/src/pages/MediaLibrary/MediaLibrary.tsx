@@ -46,9 +46,9 @@ export default function MediaLibrary() {
     // Delete Modal
     const [deleteTarget, setDeleteTarget] = useState<Media | null>(null);
 
-    const handleUpload = async (file: File) => {
+    const handleUpload = async (file: File, thumbnail?: File) => {
         try {
-            await uploadMedia(file);
+            await uploadMedia(file, thumbnail);
             toast.success("Media berhasil diunggah.");
             setUploadOpen(false);
         } catch {

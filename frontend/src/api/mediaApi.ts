@@ -25,9 +25,12 @@ const show = async (id: number): Promise<Media> => {
     return response.data.data;
 };
 
-const upload = async (file: File): Promise<Media> => {
+const upload = async (file: File, thumbnail?: File): Promise<Media> => {
     const formData = new FormData();
     formData.append("file", file);
+    if (thumbnail) {
+        formData.append("thumbnail", thumbnail);
+    }
 
     const response = await api.post<ApiResponse<Media>>("/media", formData, {
         headers: {

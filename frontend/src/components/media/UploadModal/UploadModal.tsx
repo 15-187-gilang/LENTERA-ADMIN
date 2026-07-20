@@ -1,12 +1,16 @@
 import "./UploadModal.css";
-import { useState, useRef } from "react";
-import { X, Upload, ImagePlus } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { X, Upload, FilePlus } from "lucide-react";
+import * as pdfjsLib from "pdfjs-dist";
+
+// Setup PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 import Button from "../../common/Button";
 
 interface UploadModalProps {
     open: boolean;
     uploading: boolean;
-    onUpload: (file: File) => void;
+    onUpload: (file: File, thumbnail?: File) => void;
     onClose: () => void;
 }
 
@@ -19,21 +23,81 @@ export default function UploadModal({
     const [dragOver, setDragOver] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+    const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+    const [generatingPdf, setGeneratingPdf] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (!open) {
+            setSelectedFile(null);
+            setPreview(null);
+            setThumbnailFile(null);
+            setGeneratingPdf(false);
+            setDragOver(false);
+            if (inputRef.current) {
+                inputRef.current.value = "";
+            }
+        }
+    }, [open]);
 
     if (!open) return null;
 
-    const handleFile = (file: File) => {
+    const handleFile = async (file: File) => {
         setSelectedFile(file);
-        const url = URL.createObjectURL(file);
-        setPreview(url);
+        
+        if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
+            setGeneratingPdf(true);
+            let pdf: any = null;
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const page = await pdf.getPage(1);
+                
+                const viewport = page.getViewport({ scale: 1.5 });
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                
+                if (context) {
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    const renderContext: any = {
+                        canvasContext: context,
+                        viewport: viewport,
+                    };
+                    
+                    await page.render(renderContext).promise;
+                    page.cleanup();
+                    
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const file = new File([blob], "thumbnail.jpg", { type: "image/jpeg" });
+                            setThumbnailFile(file);
+                        }
+                    }, "image/jpeg", 0.8);
+                    
+                    setPreview(canvas.toDataURL("image/jpeg", 0.8));
+                }
+            } catch (error) {
+                console.error("Error generating PDF preview:", error);
+                setPreview(null);
+            } finally {
+                if (pdf) {
+                    try { pdf.destroy(); } catch (e) {}
+                }
+                setGeneratingPdf(false);
+            }
+        } else {
+            const url = URL.createObjectURL(file);
+            setPreview(url);
+        }
     };
 
     const handleDrop = (e: React.DragEvent) => {
         e.preventDefault();
         setDragOver(false);
         const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith("image/")) {
+        if (file && (file.type.startsWith("image/") || file.type === "application/pdf")) {
             handleFile(file);
         }
     };
@@ -45,13 +109,14 @@ export default function UploadModal({
 
     const handleUpload = () => {
         if (selectedFile) {
-            onUpload(selectedFile);
+            onUpload(selectedFile, thumbnailFile || undefined);
         }
     };
 
     const handleClose = () => {
         setSelectedFile(null);
         setPreview(null);
+        setThumbnailFile(null);
         onClose();
     };
 
@@ -64,7 +129,7 @@ export default function UploadModal({
             <div className="upload-modal">
                 {/* Header */}
                 <div className="upload-modal-header">
-                    <h2>Upload Gambar</h2>
+                    <h2>Upload Media</h2>
                     <button
                         className="upload-modal-close"
                         onClick={handleClose}
@@ -76,9 +141,15 @@ export default function UploadModal({
 
                 {/* Body */}
                 <div className="upload-modal-body">
-                    {preview ? (
+                    {preview || generatingPdf ? (
                         <div className="upload-preview">
-                            <img src={preview} alt="preview" />
+                            {generatingPdf ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '160px', background: '#f1f5f9', width: '100%', color: '#64748b' }}>
+                                    <p>Memproses PDF...</p>
+                                </div>
+                            ) : (
+                                <img src={preview!} alt="preview" />
+                            )}
                             <div className="upload-preview-info">
                                 <p className="file-name">{selectedFile?.name}</p>
                                 <p className="file-size">
@@ -92,10 +163,11 @@ export default function UploadModal({
                                 onClick={() => {
                                     setSelectedFile(null);
                                     setPreview(null);
+                                    setThumbnailFile(null);
                                 }}
-                                disabled={uploading}
+                                disabled={uploading || generatingPdf}
                             >
-                                <X size={16} /> Ganti Gambar
+                                <X size={16} /> Ganti File
                             </button>
                         </div>
                     ) : (
@@ -106,14 +178,14 @@ export default function UploadModal({
                             onDrop={handleDrop}
                             onClick={() => inputRef.current?.click()}
                         >
-                            <ImagePlus size={48} />
-                            <p className="dropzone-title">Seret & Lepas Gambar di Sini</p>
+                            <FilePlus size={48} />
+                            <p className="dropzone-title">Seret & Lepas Media di Sini</p>
                             <p className="dropzone-subtitle">atau klik untuk memilih file</p>
-                            <p className="dropzone-hint">JPG, PNG, WEBP, GIF • Maks. 5 MB</p>
+                            <p className="dropzone-hint">JPG, PNG, WEBP, GIF, PDF • Maks. 5 MB</p>
                             <input
                                 ref={inputRef}
                                 type="file"
-                                accept="image/*"
+                                accept="image/*, application/pdf"
                                 hidden
                                 onChange={handleInputChange}
                             />

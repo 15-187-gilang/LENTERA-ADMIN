@@ -88,6 +88,9 @@ class AchievementResource extends JsonResource
 
             'thumbnail_url' => $this->thumbnail
                 ? asset('storage/'.$this->thumbnail): null,
+                
+            'attachment_url' => $this->attachment
+                ? asset('storage/'.$this->attachment): null,
 
             /*
             |--------------------------------------------------------------------------

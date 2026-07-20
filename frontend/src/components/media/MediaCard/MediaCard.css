@@ -119,3 +119,27 @@
     padding: 5px 8px;
     justify-content: center;
 }
+
+/* Document / Non-Image files */
+.media-card-document {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    color: #ef4444;
+    gap: 12px;
+}
+
+.document-icon {
+    stroke-width: 1.5;
+}
+
+.document-ext {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #64748b;
+}

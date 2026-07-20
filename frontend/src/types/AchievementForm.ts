@@ -27,7 +27,9 @@ export interface AchievementFormValues {
 
     is_published: boolean;
 
-    thumbnail: File | null;
+    thumbnail: File | string | null;
+
+    attachment: File | null;
 
     thumbnail_source: "upload" | "library";
 

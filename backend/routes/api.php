@@ -41,6 +41,7 @@ Route::get('/achievements', [AchievementController::class, 'index']);
 Route::get('/achievements/featured', [AchievementController::class, 'featured']);
 Route::get('/achievements/statistics', [AchievementController::class, 'statistics']);
 Route::get('/public/achievements', [AchievementController::class, 'published']);
+Route::get('/public/achievements/{slug}', [AchievementController::class, 'showBySlug']);
 
 Route::get('/achievements/{achievement}', [AchievementController::class, 'show']);
 

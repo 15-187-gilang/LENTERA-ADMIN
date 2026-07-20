@@ -57,11 +57,11 @@ export default function useMedia() {
         await loadMedia(filters);
     }, [filters, loadMedia]);
 
-    const uploadMedia = async (file: File): Promise<Media> => {
+    const uploadMedia = async (file: File, thumbnail?: File): Promise<Media> => {
         try {
             setUploading(true);
             setError(null);
-            const newMedia = await mediaApi.upload(file);
+            const newMedia = await mediaApi.upload(file, thumbnail);
             await refresh();
             return newMedia;
         } catch (err: any) {

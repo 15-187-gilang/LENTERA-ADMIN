@@ -120,14 +120,24 @@ export default function AchievementForm({
                     {thumbnailSource === "upload" ? (
                         <FileUpload
                             disabled={loading}
-                            value={values.thumbnail ?? undefined}
+                            value={values.attachment || (values.thumbnail instanceof File ? values.thumbnail : undefined)}
                             previewUrl={previewUrl ?? undefined}
-                            onChange={(file) =>
-                                onChange(
-                                    "thumbnail",
-                                    file ?? null
-                                )
-                            }
+                            onChange={(file) => {
+                                if (!file) {
+                                    onChange("thumbnail", null);
+                                    onChange("attachment", null);
+                                } else if (file.type === "application/pdf") {
+                                    onChange("attachment", file);
+                                } else {
+                                    onChange("thumbnail", file);
+                                    onChange("attachment", null);
+                                }
+                            }}
+                            onThumbnailGenerated={(dataUrl) => {
+                                if (dataUrl) {
+                                    onChange("thumbnail", dataUrl);
+                                }
+                            }}
                         />
                     ) : (
                         <div className="library-picker-area">

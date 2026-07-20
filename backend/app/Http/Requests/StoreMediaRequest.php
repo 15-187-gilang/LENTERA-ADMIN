@@ -23,9 +23,15 @@ class StoreMediaRequest extends FormRequest
         return [
             'file' => [
                 'required',
-                'image',
-                'mimes:jpg,jpeg,png,webp,gif',
+                'file',
+                'mimes:jpg,jpeg,png,webp,gif,pdf',
                 'max:5120', // 5 MB
+            ],
+            'thumbnail' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:1024', // 1 MB untuk thumbnail
             ],
         ];
     }
@@ -33,9 +39,9 @@ class StoreMediaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'file.required' => 'File gambar wajib diunggah.',
-            'file.image'    => 'File harus berupa gambar.',
-            'file.mimes'    => 'Format gambar yang diizinkan: JPG, JPEG, PNG, WEBP, GIF.',
+            'file.required' => 'File wajib diunggah.',
+            'file.file'     => 'File tidak valid.',
+            'file.mimes'    => 'Format file yang diizinkan: JPG, JPEG, PNG, WEBP, GIF, PDF.',
             'file.max'      => 'Ukuran file maksimal adalah 5 MB.',
         ];
     }

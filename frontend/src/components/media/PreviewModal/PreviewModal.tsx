@@ -1,5 +1,5 @@
 import "./PreviewModal.css";
-import { X, Link2, Download, Trash2 } from "lucide-react";
+import { X, Link2, Download, Trash2, FileText } from "lucide-react";
 import type { Media } from "../../../types/Api";
 import { formatDate } from "../../../utils";
 import Button from "../../common/Button";
@@ -18,6 +18,10 @@ export default function PreviewModal({
     onClose,
     onDelete,
 }: PreviewModalProps) {
+    const isImage = media?.mime_type?.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp"].includes(media?.extension?.toLowerCase() || "");
+    const isPdf = media?.extension?.toLowerCase() === "pdf" || media?.mime_type === "application/pdf";
+    const previewUrl = media?.thumbnail_url || media?.url;
+
     if (!open || !media) return null;
 
     const handleCopyUrl = async () => {
@@ -57,7 +61,16 @@ export default function PreviewModal({
                 <div className="preview-modal-body">
                     {/* Image */}
                     <div className="preview-image-area">
-                        <img src={media.url} alt={media.original_name} />
+                        {isImage || (isPdf && media?.thumbnail_url) ? (
+                            <img src={previewUrl} alt={media?.original_name} />
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', minHeight: '200px', backgroundColor: '#f8fafc', color: '#64748b', gap: '8px' }}>
+                                <>
+                                    <FileText size={48} />
+                                    <p>Preview tidak tersedia</p>
+                                </>
+                            </div>
+                        )}
                     </div>
 
                     {/* Metadata */}

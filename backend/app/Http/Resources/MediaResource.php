@@ -30,6 +30,7 @@ class MediaResource extends JsonResource
             'size_formatted' => $this->size_formatted,
             'path'           => $this->path,
             'url'            => $this->url,
+            'thumbnail_url'  => $this->thumbnail_url,
 
             'uploaded_by' => [
                 'id'    => $this->uploader?->id,

@@ -64,6 +64,8 @@ export default function TambahPrestasi() {
 
         thumbnail: null,
 
+        attachment: null,
+
         thumbnail_source: "upload",
 
         thumbnail_media_url: null,

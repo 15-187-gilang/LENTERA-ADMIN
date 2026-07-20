@@ -151,6 +151,23 @@ class AchievementController extends Controller
     }
 
     /**
+     * Menampilkan detail prestasi untuk publik berdasarkan slug.
+     * Hanya mengembalikan prestasi yang sudah dipublikasikan.
+     */
+    public function showBySlug(string $slug): JsonResponse
+    {
+        $achievement = Achievement::where('slug', $slug)
+            ->where('is_published', true)
+            ->with(['category', 'creator'])
+            ->firstOrFail();
+
+        return $this->success(
+            new AchievementResource($achievement),
+            'Detail prestasi berhasil diambil.'
+        );
+    }
+
+    /**
      * Mengambil daftar prestasi unggulan.
      */
     public function featured(): JsonResponse

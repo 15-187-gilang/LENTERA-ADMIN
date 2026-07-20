@@ -36,7 +36,9 @@ export interface AchievementPayload {
 
     is_published: boolean;
 
-    thumbnail?: File;
+    thumbnail?: File | string;
+
+    attachment?: File;
 
     thumbnail_source?: "upload" | "library";
 

@@ -42,7 +42,7 @@ class MediaService
     /**
      * Mengupload file baru dan menyimpan metadata-nya.
      */
-    public function upload(UploadedFile $file, int $adminId): Media
+    public function upload(UploadedFile $file, int $adminId, ?UploadedFile $thumbnail = null): Media
     {
         // Generate nama file unik dengan UUID
         $extension = strtolower($file->getClientOriginalExtension());
@@ -55,18 +55,30 @@ class MediaService
         // Buat URL publik
         $url = Storage::disk('public')->url($path);
 
+        $thumbnailPath = null;
+        $thumbnailUrl = null;
+
+        if ($thumbnail) {
+            $thumbExtension = strtolower($thumbnail->getClientOriginalExtension());
+            $thumbFilename  = 'thumb_' . Str::uuid() . '.' . $thumbExtension;
+            $thumbnailPath  = $thumbnail->storeAs($directory . '/thumbnails', $thumbFilename, 'public');
+            $thumbnailUrl   = Storage::disk('public')->url($thumbnailPath);
+        }
+
         // Simpan metadata ke database
         $media = $this->mediaRepository->create([
-            'original_name' => $file->getClientOriginalName(),
-            'filename'      => $filename,
-            'mime_type'     => $file->getMimeType(),
-            'extension'     => $extension,
-            'size'          => $file->getSize(),
-            'disk'          => 'public',
-            'directory'     => $directory,
-            'path'          => $path,
-            'url'           => $url,
-            'uploaded_by'   => $adminId,
+            'original_name'  => $file->getClientOriginalName(),
+            'filename'       => $filename,
+            'mime_type'      => $file->getMimeType(),
+            'extension'      => $extension,
+            'size'           => $file->getSize(),
+            'disk'           => 'public',
+            'directory'      => $directory,
+            'path'           => $path,
+            'url'            => $url,
+            'thumbnail_path' => $thumbnailPath,
+            'thumbnail_url'  => $thumbnailUrl,
+            'uploaded_by'    => $adminId,
         ]);
 
 
@@ -82,6 +94,10 @@ class MediaService
         // Hapus file dari storage
         if (Storage::disk($media->disk)->exists($media->path)) {
             Storage::disk($media->disk)->delete($media->path);
+        }
+
+        if ($media->thumbnail_path && Storage::disk($media->disk)->exists($media->thumbnail_path)) {
+            Storage::disk($media->disk)->delete($media->thumbnail_path);
         }
 
         $originalName = $media->original_name;

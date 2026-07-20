@@ -43,6 +43,7 @@ export default function EditPrestasi() {
         featured: false,
         is_published: false,
         thumbnail: null,
+        attachment: null,
         thumbnail_source: "upload",
         thumbnail_media_url: null,
     });
@@ -79,6 +80,7 @@ export default function EditPrestasi() {
                     featured: data.featured,
                     is_published: data.is_published,
                     thumbnail: null, // Initialized as null because it's a File object (only changes if admin selects new file)
+                    attachment: null,
                     thumbnail_source: "upload",
                     thumbnail_media_url: null,
                 });
