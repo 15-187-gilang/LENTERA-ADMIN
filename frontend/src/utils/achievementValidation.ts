@@ -4,7 +4,8 @@ import type {
 } from "../types/AchievementForm";
 
 export function validateAchievementForm(
-    values: AchievementFormValues
+    values: AchievementFormValues,
+    isDraft: boolean = false
 ): AchievementFormErrors {
 
     const errors: AchievementFormErrors = {};
@@ -14,6 +15,10 @@ export function validateAchievementForm(
         errors.title =
             "Judul prestasi wajib diisi.";
 
+    }
+
+    if (isDraft) {
+        return errors;
     }
 
     if (!values.recipient.trim()) {

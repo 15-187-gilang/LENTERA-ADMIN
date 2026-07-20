@@ -116,11 +116,6 @@ export default function Badge({
 
     }
 
-    console.log({
-    variant,
-    value,
-    badge,
-});
 
     const Icon = badge.icon;
 

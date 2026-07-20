@@ -18,7 +18,7 @@ import type {
 
 export interface AchievementPayload {
 
-    category_id: number;
+    category_id?: number | null;
 
     title: string;
 
@@ -77,8 +77,6 @@ class AchievementApi {
             await api.get("/achievements", {
                 params,
             });
-
-        console.log(response.data);
 
         return {
             data: response.data.data,

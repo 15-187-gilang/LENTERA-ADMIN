@@ -27,10 +27,12 @@ class StoreAchievementRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isPublished = $this->input('is_published') == '1' || $this->input('is_published') === true;
+
         return [
 
             'category_id' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 'exists:categories,id'
             ],
 
@@ -41,19 +43,19 @@ class StoreAchievementRequest extends FormRequest
             ],
 
             'recipient' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 'string',
                 'max:255'
             ],
 
             'organizer' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 'string',
                 'max:255'
             ],
 
             'level' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 Rule::in([
                     'Kabupaten',
                     'Provinsi',
@@ -63,18 +65,19 @@ class StoreAchievementRequest extends FormRequest
             ],
 
             'achievement_date' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 'date'
             ],
 
             'description' => [
-                'required',
+                $isPublished ? 'required' : 'nullable',
                 'string'
             ],
 
             'thumbnail' => [
                 'nullable',
-                function ($attribute, $value, $fail) {
+                function ($attribute, $value, $fail) use ($isPublished) {
+                    if (!$isPublished && empty($value)) return;
                     if (is_string($value)) {
                         return;
                     } elseif ($value instanceof \Illuminate\Http\UploadedFile) {

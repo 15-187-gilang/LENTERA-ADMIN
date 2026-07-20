@@ -83,6 +83,8 @@ export interface AchievementFormProps {
     
     previewUrl?: string | null;
 
+    isPublished?: boolean;
+
     onChange: <K extends keyof AchievementFormValues>(
         field: K,
         value: AchievementFormValues[K]

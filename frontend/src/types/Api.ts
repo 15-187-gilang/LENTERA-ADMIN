@@ -135,17 +135,22 @@ export interface Achievement {
 
     slug: string;
 
-    recipient: string;
+    /** Nullable saat draft */
+    recipient: string | null;
 
-    organizer: string;
+    /** Nullable saat draft */
+    organizer: string | null;
 
-    level: string;
+    /** Nullable saat draft */
+    level: string | null;
 
     level_badge: string;
 
-    achievement_date: string;
+    /** Nullable saat draft */
+    achievement_date: string | null;
 
-    description: string;
+    /** Nullable saat draft */
+    description: string | null;
 
     short_description: string;
 

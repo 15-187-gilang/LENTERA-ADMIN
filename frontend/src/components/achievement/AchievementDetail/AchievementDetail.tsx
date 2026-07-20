@@ -54,19 +54,19 @@ export default function AchievementDetail({ achievement }: AchievementDetailProp
 
                     <div className="info-item">
                         <span className="info-label">Penyelenggara</span>
-                        <span className="info-value">{achievement.organizer}</span>
+                        <span className="info-value">{achievement.organizer || "-"}</span>
                     </div>
 
                     <div className="info-item">
                         <span className="info-label">Tingkat</span>
                         <span className="info-value">
-                            <Badge variant="level" value={achievement.level} />
+                            {achievement.level ? <Badge variant="level" value={achievement.level} /> : "-"}
                         </span>
                     </div>
 
                     <div className="info-item">
                         <span className="info-label">Tanggal Prestasi</span>
-                        <span className="info-value">{formatDate(achievement.achievement_date)}</span>
+                        <span className="info-value">{formatDate(achievement.achievement_date || "")}</span>
                     </div>
 
                     <div className="info-item">

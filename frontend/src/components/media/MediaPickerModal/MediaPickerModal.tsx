@@ -85,7 +85,7 @@ export default function MediaPickerModal({
                                     onClick={() => setSelected(item)}
                                     title={item.original_name}
                                 >
-                                    <img src={item.url} alt={item.original_name} loading="lazy" />
+                                    <img src={item.thumbnail_url || item.url} alt={item.original_name} loading="lazy" />
                                     {selected?.id === item.id && (
                                         <div className="picker-check">
                                             <Check size={16} />

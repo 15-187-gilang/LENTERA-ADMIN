@@ -75,6 +75,14 @@ class Achievement extends Model
     }
 
     /*
+     * Scope untuk mengambil data draft.
+     */
+    public function scopeDraft(Builder $query): Builder
+    {
+        return $query->where('is_published', false);
+    }
+
+    /*
      * Scope untuk mengambil prestasi unggulan.
      */
     public function scopeFeatured(Builder $query): Builder

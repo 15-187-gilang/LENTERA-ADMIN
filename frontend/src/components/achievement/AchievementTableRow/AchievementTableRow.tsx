@@ -99,7 +99,7 @@ export default function AchievementTableRow({
 
                         <p>
 
-                            {achievement.recipient}
+                            {achievement.recipient || "—"}
 
                         </p>
 
@@ -133,7 +133,7 @@ export default function AchievementTableRow({
 
                 <Badge
                     variant="level"
-                    value={achievement.level}
+                    value={achievement.level || "—"}
                 />
 
             </td>
@@ -153,6 +153,19 @@ export default function AchievementTableRow({
                     )
 
                 }
+
+            </td>
+
+            {/* =======================================================
+                Status
+            ======================================================= */}
+
+            <td>
+
+                <Badge
+                    variant="status"
+                    value={achievement.is_published}
+                />
 
             </td>
 

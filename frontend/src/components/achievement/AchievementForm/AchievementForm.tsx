@@ -35,6 +35,8 @@ export default function AchievementForm({
 
     previewUrl,
 
+    isPublished,
+
     onChange,
 
     onSubmit,
@@ -51,7 +53,7 @@ export default function AchievementForm({
     const [pickerOpen, setPickerOpen] = useState(false);
 
     const handlePickMedia = (media: Media) => {
-        onChange("thumbnail_media_url", media.url);
+        onChange("thumbnail_media_url", media.thumbnail_url || media.url);
         onChange("thumbnail_source", "library");
         onChange("thumbnail", null);
     };
@@ -62,14 +64,14 @@ export default function AchievementForm({
         <>
             <form
                 className="achievement-form"
-            onSubmit={(event) => {
+                onSubmit={(event) => {
 
-                event.preventDefault();
+                    event.preventDefault();
 
-                onSubmit();
+                    onSubmit();
 
-            }}
-        >
+                }}
+            >
 
             {/* =======================================================
                 Thumbnail
@@ -209,7 +211,7 @@ export default function AchievementForm({
 
                     <FormField
                         label="Penerima Prestasi"
-                        required
+                        required={isPublished !== false}
                         error={errors.recipient}
                     >
 
@@ -231,7 +233,7 @@ export default function AchievementForm({
 
                     <FormField
                         label="Penyelenggara"
-                        required
+                        required={isPublished !== false}
                         error={errors.organizer}
                     >
 
@@ -267,7 +269,7 @@ export default function AchievementForm({
 
                     <FormField
                         label="Kategori"
-                        required
+                        required={isPublished !== false}
                         error={errors.category_id}
                     >
 
@@ -298,7 +300,7 @@ export default function AchievementForm({
 
                     <FormField
                         label="Tingkat"
-                        required
+                        required={isPublished !== false}
                         error={errors.level}
                     >
 
@@ -322,7 +324,7 @@ export default function AchievementForm({
 
                     <FormField
                         label="Tanggal Prestasi"
-                        required
+                        required={isPublished !== false}
                         error={errors.achievement_date}
                     >
 
@@ -356,7 +358,7 @@ export default function AchievementForm({
 
                 <FormField
                     label="Deskripsi"
-                    required
+                    required={isPublished !== false}
                     error={errors.description}
                 >
 
@@ -386,27 +388,43 @@ export default function AchievementForm({
 
             <div className="form-actions">
 
-                <Button
-                    variant="secondary"
-                    type="button"
-                    onClick={onCancel}
-                >
-
+                <Button variant="secondary" type="button" onClick={onCancel}>
                     Batal
-
                 </Button>
 
+                {/* Simpan Draft: tampil saat mode Tambah ATAU prestasi masih draft */}
+                {isPublished !== true && (
+                    <Button
+                        variant="outline"
+                        type="button"
+                        disabled={loading}
+                        onClick={() => onSubmit(false)}
+                    >
+                        {loading ? "Menyimpan..." : "Simpan Draft"}
+                    </Button>
+                )}
 
-
-                <Button
-                    type="button"
-                    disabled={loading}
-                    onClick={() => onSubmit(true)}
-                >
-
-                    {loading ? "Menyimpan..." : "Publikasikan Prestasi"}
-
-                </Button>
+                {/* Tombol Publikasi Adaptif */}
+                {isPublished === true ? (
+                    /* Sudah published → tawarkan jadikan draft */
+                    <Button
+                        variant="danger"
+                        type="button"
+                        disabled={loading}
+                        onClick={() => onSubmit(false)}
+                    >
+                        {loading ? "Memproses..." : "Jadikan Draft"}
+                    </Button>
+                ) : (
+                    /* Draft / mode Tambah → tawarkan publikasikan */
+                    <Button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => onSubmit(true)}
+                    >
+                        {loading ? "Mempublikasikan..." : "Publikasikan"}
+                    </Button>
+                )}
 
             </div>
 

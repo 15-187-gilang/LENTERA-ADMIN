@@ -68,18 +68,20 @@ export default function EditPrestasi() {
                 setCategories(cats.data);
 
                 // Populate form values
+                // Gunakan ?? "" untuk semua field string agar tidak ada null yang masuk ke Select/Input
                 setValues({
                     category_id: data.category?.id ?? "",
-                    title: data.title,
-                    recipient: data.recipient,
-                    organizer: data.organizer,
-                    level: data.level,
-                    // Backend returns datetime string like '2025-01-01T...', extract just the date YYYY-MM-DD
-                    achievement_date: data.achievement_date ? new Date(data.achievement_date).toISOString().split('T')[0] : "",
-                    description: data.description,
-                    featured: data.featured,
-                    is_published: data.is_published,
-                    thumbnail: null, // Initialized as null because it's a File object (only changes if admin selects new file)
+                    title: data.title ?? "",
+                    recipient: data.recipient ?? "",
+                    organizer: data.organizer ?? "",
+                    level: data.level ?? "",
+                    achievement_date: data.achievement_date
+                        ? new Date(data.achievement_date).toISOString().split('T')[0]
+                        : "",
+                    description: data.description ?? "",
+                    featured: data.featured ?? false,
+                    is_published: data.is_published ?? false,
+                    thumbnail: null,
                     attachment: null,
                     thumbnail_source: "upload",
                     thumbnail_media_url: null,
@@ -116,14 +118,14 @@ export default function EditPrestasi() {
         }));
     }
 
-    async function handleSubmit(isPublishedOverride?: boolean) {
-        const finalIsPublished = isPublishedOverride !== undefined ? isPublishedOverride : values.is_published;
-        const currentValues = { ...values, is_published: finalIsPublished };
+    async function handleSubmit(isPublished: boolean = false) {
+        const isDraft = !isPublished;
+        const finalValues = { ...values, is_published: isPublished };
 
-        const validationErrors = validateAchievementForm(currentValues);
+        const validationErrors = validateAchievementForm(finalValues, isDraft);
 
         // Jika errornya hanya di thumbnail, kita abaikan (karena saat edit, thumbnail boleh kosong / menggunakan yang lama)
-        if (validationErrors.thumbnail && !currentValues.thumbnail) {
+        if (validationErrors.thumbnail && !finalValues.thumbnail) {
             delete validationErrors.thumbnail;
         }
 
@@ -134,21 +136,25 @@ export default function EditPrestasi() {
 
         try {
             await updateAchievement(achievementId, {
-                category_id: Number(currentValues.category_id),
-                title: currentValues.title,
-                recipient: currentValues.recipient,
-                organizer: currentValues.organizer,
-                level: currentValues.level,
-                achievement_date: currentValues.achievement_date,
-                description: currentValues.description,
-                featured: currentValues.featured,
-                is_published: currentValues.is_published,
-                thumbnail: currentValues.thumbnail ?? undefined,
-                thumbnail_source: currentValues.thumbnail_source,
-                thumbnail_media_url: currentValues.thumbnail_media_url ?? undefined,
+                category_id: finalValues.category_id ? Number(finalValues.category_id) : null,
+                title: finalValues.title,
+                recipient: finalValues.recipient,
+                organizer: finalValues.organizer,
+                level: finalValues.level,
+                achievement_date: finalValues.achievement_date,
+                description: finalValues.description,
+                featured: finalValues.featured,
+                is_published: isPublished,
+                thumbnail: finalValues.thumbnail ?? undefined,
+                thumbnail_source: finalValues.thumbnail_source,
+                thumbnail_media_url: finalValues.thumbnail_media_url ?? undefined,
             });
 
-            toast.success("Prestasi berhasil diperbarui.");
+            toast.success(
+                isPublished
+                    ? "Prestasi berhasil dipublikasikan."
+                    : "Prestasi dijadikan draft."
+            );
             navigate("/prestasi");
         } catch (error: any) {
             if (error?.response?.status === 422) {
@@ -200,6 +206,7 @@ export default function EditPrestasi() {
                 loading={submitting}
                 submitText="Simpan Perubahan"
                 previewUrl={previewUrl}
+                isPublished={values.is_published}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}

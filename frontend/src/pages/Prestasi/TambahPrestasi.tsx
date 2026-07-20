@@ -193,14 +193,15 @@ export default function TambahPrestasi() {
      * ============================================================
      */
 
-    async function handleSubmit(isPublishedOverride?: boolean) {
+    async function handleSubmit(isPublished: boolean = false) {
 
-        const finalIsPublished = isPublishedOverride !== undefined ? isPublishedOverride : values.is_published;
-        const currentValues = { ...values, is_published: finalIsPublished };
+        const isDraft = !isPublished;
+        const currentValues = { ...values, is_published: isPublished };
 
+        // Draft hanya wajib isi title, publikasi wajib isi semua
         const validationErrors =
 
-            validateAchievementForm(currentValues);
+            validateAchievementForm(currentValues, isDraft);
 
         if (
 
@@ -218,7 +219,7 @@ export default function TambahPrestasi() {
 
             await createAchievement({
 
-                category_id: Number(currentValues.category_id),
+                category_id: Number(currentValues.category_id) || null,
 
                 title: currentValues.title,
 
@@ -246,7 +247,9 @@ export default function TambahPrestasi() {
 
             toast.success(
 
-                "Prestasi berhasil ditambahkan."
+                isPublished
+                    ? "Prestasi berhasil dipublikasikan."
+                    : "Draft berhasil disimpan."
 
             );
 

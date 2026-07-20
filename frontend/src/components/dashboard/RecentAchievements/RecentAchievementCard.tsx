@@ -48,7 +48,7 @@ export default function RecentAchievementCard({
 
                 <Badge
                     variant="level"
-                    value={achievement.level}
+                    value={achievement.level || "—"}
                 />
             </div>
 
@@ -60,7 +60,7 @@ export default function RecentAchievementCard({
                 <div className="achievement-item">
                     <RecipientIcon size={18} />
 
-                    <span>{achievement.recipient}</span>
+                    <span>{achievement.recipient || "—"}</span>
                 </div>
 
                 <div className="achievement-item">
