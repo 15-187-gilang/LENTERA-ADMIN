@@ -46,7 +46,6 @@ html {
 .sidebar {
     width: 260px;
     background-color: #ffffff;
-    border-right: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -226,7 +225,6 @@ html {
     flex: 1;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid #e5e7eb;
     height: 100vh;
     overflow-y: auto; /* Mengaktifkan scroll HANYA di area konten */
     position: relative;
@@ -240,7 +238,6 @@ html {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #e5e7eb;
     position: sticky;
     top: 0;
     background-color: #ffffff; /* Wajib putih agar saat konten di-scroll, tidak tembus pandang */

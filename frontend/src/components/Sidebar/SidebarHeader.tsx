@@ -1,12 +1,6 @@
-import { Menu } from "lucide-react";
+import logoLentera from "../../assets/lentera.png";
 
-import logoLentera from "../../../src/assets/logo-lentera.png";
-
-interface SidebarHeaderProps {
-    onToggle: () => void;
-}
-
-export default function SidebarHeader({ onToggle }: SidebarHeaderProps) {
+export default function SidebarHeader() {
     return (
         <div className="sidebar-header">
             <div className="brand-info">
@@ -15,20 +9,11 @@ export default function SidebarHeader({ onToggle }: SidebarHeaderProps) {
                     alt="Logo LENTERA"
                     className="sidebar-logo"
                 />
-
                 <div className="brand-text">
                     <h2>LENTERA</h2>
-                    <p>Admin Console</p>
+                    <p>ADMIN</p>
                 </div>
             </div>
-
-            <button
-                className="menu-toggle-btn"
-                onClick={onToggle}
-                aria-label="Toggle Sidebar"
-            >
-                <Menu size={24} />
-            </button>
         </div>
     );
 }

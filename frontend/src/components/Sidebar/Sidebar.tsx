@@ -15,7 +15,7 @@ import type { SidebarProps } from "./Types";
 export default function Sidebar({ isOpen, onToggle, onLogout }: SidebarProps) {
     return (
         <aside className={`sidebar ${isOpen ? "" : "closed"}`}>
-            <SidebarHeader onToggle={onToggle} />
+            <SidebarHeader />
 
             <SidebarMenu />
 

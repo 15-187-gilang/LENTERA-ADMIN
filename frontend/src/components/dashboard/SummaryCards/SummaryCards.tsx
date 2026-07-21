@@ -40,6 +40,13 @@ export default function SummaryCards({ summary }: SummaryCardsProps) {
             />
 
             <SummaryCard
+                title="Draft"
+                value={summary.draft}
+                icon={FileClock}
+                color="#F59E0B"
+            />
+
+            <SummaryCard
                 title="Kategori"
                 value={summary.total_categories}
                 icon={FolderTree}
