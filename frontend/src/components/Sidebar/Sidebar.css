@@ -183,7 +183,12 @@
    Collapse (Closed State)
    ========================================================================== */
 
-
+.sidebar.closed .brand-text,
+.sidebar.closed .nav-label,
+.sidebar.closed .nav-item span,
+.sidebar.closed .logout-btn span {
+    display: none;
+}
 
 .sidebar.closed .sidebar-header {
     justify-content: center;

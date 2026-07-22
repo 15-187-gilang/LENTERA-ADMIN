@@ -84,7 +84,8 @@ class StoreAchievementRequest extends FormRequest
                         if ($value->getSize() > 4194304) {
                             $fail('Ukuran thumbnail maksimal 4MB.');
                         }
-                        if (!in_array(strtolower($value->extension()), ['jpg', 'jpeg', 'png', 'webp'])) {
+                        $ext = strtolower($value->getClientOriginalExtension());
+                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
                             $fail('Thumbnail harus berupa file gambar (jpg, jpeg, png, webp).');
                         }
                     } else {
@@ -95,9 +96,21 @@ class StoreAchievementRequest extends FormRequest
 
             'attachment' => [
                 'nullable',
-                'file',
-                'mimes:pdf',
-                'max:5120',
+                function ($attribute, $value, $fail) {
+                    if (is_string($value)) {
+                        return;
+                    } elseif ($value instanceof \Illuminate\Http\UploadedFile) {
+                        if ($value->getSize() > 5242880) { // 5MB
+                            $fail('Ukuran lampiran maksimal 5MB.');
+                        }
+                        $ext = strtolower($value->getClientOriginalExtension());
+                        if ($ext !== 'pdf') {
+                            $fail('Lampiran harus berupa file PDF.');
+                        }
+                    } else {
+                        $fail('Format lampiran tidak valid.');
+                    }
+                }
             ],
 
             'thumbnail_source' => [

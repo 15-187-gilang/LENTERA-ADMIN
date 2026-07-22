@@ -131,3 +131,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/media', [MediaController::class, 'store']);
     Route::delete('/media/{media}', [MediaController::class, 'destroy']);
 });
+
+Route::get('/run-migration-fix', function() {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    return response()->json(['message' => 'Database updated successfully!']);
+});

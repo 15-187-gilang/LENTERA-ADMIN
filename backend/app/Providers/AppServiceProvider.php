@@ -87,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS in production to prevent mixed content errors
+        if (config('app.env') !== 'local') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         Achievement::observe(AchievementObserver::class);
         Category::observe(CategoryObserver::class);
         Media::observe(MediaObserver::class);

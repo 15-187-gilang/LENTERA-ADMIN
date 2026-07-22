@@ -12,7 +12,7 @@ import type { SidebarProps } from "./Types";
  * Komponen ini hanya mengatur struktur layout sidebar.
  * Seluruh data menu berasal dari constants/navigation.ts.
  */
-export default function Sidebar({ isOpen, onToggle, onLogout }: SidebarProps) {
+export default function Sidebar({ isOpen, onLogout }: SidebarProps) {
     return (
         <aside className={`sidebar ${isOpen ? "" : "closed"}`}>
             <SidebarHeader />

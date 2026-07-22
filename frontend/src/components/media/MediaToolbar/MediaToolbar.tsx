@@ -1,5 +1,4 @@
 import "./MediaToolbar.css";
-import { Link } from "react-router-dom";
 import { Search, RefreshCcw, Upload } from "lucide-react";
 import Button from "../../common/Button";
 import Input from "../../common/Form/Input";

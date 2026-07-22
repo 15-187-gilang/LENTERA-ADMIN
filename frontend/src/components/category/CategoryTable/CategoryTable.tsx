@@ -39,12 +39,12 @@ export default function CategoryTable({
             <table className="category-table">
                 <thead>
                     <tr>
-                        <th className="text-center" width="50">No</th>
+                        <th className="text-center" style={{ width: 50 }}>No</th>
                         <th>Nama Kategori</th>
                         <th>Slug</th>
                         <th className="text-center">Jumlah Prestasi</th>
                         <th>Tanggal Dibuat</th>
-                        <th width="150">Aksi</th>
+                        <th style={{ width: 150 }}>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -21,8 +21,10 @@ class AchievementService
 {
     /**
      * Repository yang digunakan.
+     *
+     * @var AchievementRepositoryInterface
      */
-    protected AchievementRepositoryInterface $achievementRepository;
+    protected $achievementRepository;
 
     /**
      * Constructor Dependency Injection.
@@ -63,6 +65,19 @@ class AchievementService
         // Generate slug otomatis
         $data['slug'] = Str::slug($data['title']);
 
+        // Default values for drafts to prevent database constraint errors
+        if (empty($data['is_published'])) {
+            if (empty($data['description'])) $data['description'] = '-';
+            if (empty($data['recipient'])) $data['recipient'] = '-';
+            if (empty($data['organizer'])) $data['organizer'] = '-';
+            if (empty($data['level'])) $data['level'] = 'Kabupaten';
+            if (empty($data['achievement_date'])) $data['achievement_date'] = now()->toDateString();
+            if (empty($data['category_id'])) {
+                $category = \App\Models\Category::first();
+                $data['category_id'] = $category ? $category->id : 1;
+            }
+        }
+
         if (
             isset($data['thumbnail_source']) && 
             $data['thumbnail_source'] === 'library' && 
@@ -75,26 +90,36 @@ class AchievementService
             $data['thumbnail'] !== null
         ) {
             if (is_string($data['thumbnail']) && preg_match('/^data:image\/(\w+);base64,/', $data['thumbnail'])) {
+                // Handle base64 thumbnail
                 $image_parts = explode(";base64,", $data['thumbnail']);
                 $image_type_aux = explode("image/", $image_parts[0]);
                 $image_type = $image_type_aux[1];
                 $image_base64 = base64_decode($image_parts[1]);
                 $fileName = 'achievements/' . uniqid() . '.' . $image_type;
-                Storage::disk('public')->put($fileName, $image_base64);
+                $fullPath = storage_path('app/public/' . $fileName);
+                if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+                file_put_contents($fullPath, $image_base64);
                 $data['thumbnail'] = $fileName;
             } else {
-                $data['thumbnail'] = $data['thumbnail']->store(
-                    'achievements',
-                    'public'
-                );
+                // Handle uploaded file - simpan langsung tanpa finfo/Storage
+                $ext = strtolower($data['thumbnail']->getClientOriginalExtension());
+                $uniqueName = uniqid() . '.' . $ext;
+                $filePath = 'achievements/' . $uniqueName;
+                $fullPath = storage_path('app/public/' . $filePath);
+                if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+                file_put_contents($fullPath, file_get_contents($data['thumbnail']->getPathname()));
+                $data['thumbnail'] = $filePath;
             }
         }
 
         if (isset($data['attachment']) && $data['attachment'] !== null) {
-            $data['attachment'] = $data['attachment']->store(
-                'attachments',
-                'public'
-            );
+            $ext = strtolower($data['attachment']->getClientOriginalExtension());
+            $uniqueName = uniqid() . '.' . $ext;
+            $filePath = 'attachments/' . $uniqueName;
+            $fullPath = storage_path('app/public/' . $filePath);
+            if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+            file_put_contents($fullPath, file_get_contents($data['attachment']->getPathname()));
+            $data['attachment'] = $filePath;
         }
 
         // Jika langsung dipublish
@@ -132,15 +157,13 @@ class AchievementService
             $data['thumbnail_source'] === 'library' && 
             !empty($data['thumbnail_media_url'])
         ) {
-            // Hapus thumbnail lama jika ada
+            // Hapus thumbnail lama jika ada dan bukan dari library
             if (
                 $achievement->thumbnail &&
-                Storage::disk('public')->exists($achievement->thumbnail)
+                str_starts_with($achievement->thumbnail, 'achievements/') &&
+                file_exists(storage_path('app/public/' . $achievement->thumbnail))
             ) {
-                // Cek apakah thumbnail lama bukan dari library (yakni di folder achievements)
-                if (str_starts_with($achievement->thumbnail, 'achievements/')) {
-                    Storage::disk('public')->delete($achievement->thumbnail);
-                }
+                unlink(storage_path('app/public/' . $achievement->thumbnail));
             }
 
             $parsedUrl = parse_url($data['thumbnail_media_url'], PHP_URL_PATH);
@@ -149,13 +172,13 @@ class AchievementService
             isset($data['thumbnail']) &&
             $data['thumbnail'] !== null
         ) {
+            // Hapus thumbnail lama jika ada
             if (
                 $achievement->thumbnail &&
-                Storage::disk('public')->exists($achievement->thumbnail)
+                str_starts_with($achievement->thumbnail, 'achievements/') &&
+                file_exists(storage_path('app/public/' . $achievement->thumbnail))
             ) {
-                if (str_starts_with($achievement->thumbnail, 'achievements/')) {
-                    Storage::disk('public')->delete($achievement->thumbnail);
-                }
+                unlink(storage_path('app/public/' . $achievement->thumbnail));
             }
 
             if (is_string($data['thumbnail']) && preg_match('/^data:image\/(\w+);base64,/', $data['thumbnail'])) {
@@ -164,27 +187,35 @@ class AchievementService
                 $image_type = $image_type_aux[1];
                 $image_base64 = base64_decode($image_parts[1]);
                 $fileName = 'achievements/' . uniqid() . '.' . $image_type;
-                Storage::disk('public')->put($fileName, $image_base64);
+                $fullPath = storage_path('app/public/' . $fileName);
+                if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+                file_put_contents($fullPath, $image_base64);
                 $data['thumbnail'] = $fileName;
-            } else {
-                $data['thumbnail'] = $data['thumbnail']->store(
-                    'achievements',
-                    'public'
-                );
+            } else if (!is_string($data['thumbnail'])) {
+                $ext = strtolower($data['thumbnail']->getClientOriginalExtension());
+                $uniqueName = uniqid() . '.' . $ext;
+                $filePath = 'achievements/' . $uniqueName;
+                $fullPath = storage_path('app/public/' . $filePath);
+                if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+                file_put_contents($fullPath, file_get_contents($data['thumbnail']->getPathname()));
+                $data['thumbnail'] = $filePath;
             }
         }
 
-        if (isset($data['attachment']) && $data['attachment'] !== null) {
+        if (isset($data['attachment']) && $data['attachment'] !== null && !is_string($data['attachment'])) {
             if (
                 $achievement->attachment &&
-                Storage::disk('public')->exists($achievement->attachment)
+                file_exists(storage_path('app/public/' . $achievement->attachment))
             ) {
-                Storage::disk('public')->delete($achievement->attachment);
+                unlink(storage_path('app/public/' . $achievement->attachment));
             }
-            $data['attachment'] = $data['attachment']->store(
-                'attachments',
-                'public'
-            );
+            $ext = strtolower($data['attachment']->getClientOriginalExtension());
+            $uniqueName = uniqid() . '.' . $ext;
+            $filePath = 'attachments/' . $uniqueName;
+            $fullPath = storage_path('app/public/' . $filePath);
+            if (!is_dir(dirname($fullPath))) { mkdir(dirname($fullPath), 0775, true); }
+            file_put_contents($fullPath, file_get_contents($data['attachment']->getPathname()));
+            $data['attachment'] = $filePath;
         }
 
         $result = $this->achievementRepository->update(
@@ -207,15 +238,15 @@ class AchievementService
         if (
             $achievement->thumbnail &&
             str_starts_with($achievement->thumbnail, 'achievements/') &&
-            Storage::disk('public')->exists($achievement->thumbnail)
+            file_exists(storage_path('app/public/' . $achievement->thumbnail))
         ) {
-            Storage::disk('public')->delete($achievement->thumbnail);
+            unlink(storage_path('app/public/' . $achievement->thumbnail));
         }
         if (
             $achievement->attachment &&
-            Storage::disk('public')->exists($achievement->attachment)
+            file_exists(storage_path('app/public/' . $achievement->attachment))
         ) {
-            Storage::disk('public')->delete($achievement->attachment);
+            unlink(storage_path('app/public/' . $achievement->attachment));
         }
         $title = $achievement->title;
         $result = $this->achievementRepository->delete($achievement);

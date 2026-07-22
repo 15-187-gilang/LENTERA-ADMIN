@@ -29,6 +29,7 @@ interface ButtonProps
     loading?: boolean;
 
     fullWidth?: boolean;
+    size?: "sm" | "md" | "lg";
 
 }
 
@@ -41,6 +42,8 @@ interface ButtonProps
 export default function Button({
 
     variant = "primary",
+    
+    size = "md",
 
     leftIcon,
 
@@ -69,6 +72,8 @@ export default function Button({
                 "btn",
 
                 `btn-${variant}`,
+                
+                `btn-${size}`,
 
                 fullWidth ? "btn-full" : "",
 

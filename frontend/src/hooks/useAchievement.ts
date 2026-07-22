@@ -525,6 +525,8 @@ const setSortFilter = (
 
         setSortFilter,
 
+        resetFilters,
+
         createAchievement,
 
         updateAchievement,

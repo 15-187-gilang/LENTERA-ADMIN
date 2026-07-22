@@ -14,8 +14,17 @@ class MediaObserver
      */
     public function deleted(Media $media): void
     {
-        if (Storage::disk($media->disk)->exists($media->path)) {
-            Storage::disk($media->disk)->delete($media->path);
+        // Menggunakan fungsi native PHP untuk menghindari error finfo pada Storage
+        $fullPath = storage_path('app/public/' . $media->path);
+        if ($media->path && file_exists($fullPath) && !is_dir($fullPath)) {
+            unlink($fullPath);
+        }
+
+        if ($media->thumbnail_path) {
+            $thumbPath = storage_path('app/public/' . $media->thumbnail_path);
+            if (file_exists($thumbPath) && !is_dir($thumbPath)) {
+                unlink($thumbPath);
+            }
         }
     }
 }

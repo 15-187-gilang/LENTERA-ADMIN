@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Save, User, Mail, Clock, Calendar, ShieldCheck } from "lucide-react";
+import { Save, User, Mail, Clock, Calendar } from "lucide-react";
 import type { Profile, UpdateProfilePayload } from "../../../types/Profile";
 import "./ProfileForm.css";
 

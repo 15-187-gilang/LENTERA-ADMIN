@@ -23,15 +23,35 @@ class StoreMediaRequest extends FormRequest
         return [
             'file' => [
                 'required',
-                'file',
-                'mimes:jpg,jpeg,png,webp,gif,pdf',
-                'max:5120', // 5 MB
+                function ($attribute, $value, $fail) {
+                    if (!($value instanceof \Illuminate\Http\UploadedFile)) {
+                        $fail('File tidak valid.');
+                        return;
+                    }
+                    if ($value->getSize() > 5242880) { // 5 MB
+                        $fail('Ukuran file maksimal adalah 5 MB.');
+                    }
+                    $ext = strtolower($value->getClientOriginalExtension());
+                    if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf'])) {
+                        $fail('Format file yang diizinkan: JPG, JPEG, PNG, WEBP, GIF, PDF.');
+                    }
+                },
             ],
             'thumbnail' => [
                 'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:1024', // 1 MB untuk thumbnail
+                function ($attribute, $value, $fail) {
+                    if (!($value instanceof \Illuminate\Http\UploadedFile)) {
+                        $fail('Thumbnail tidak valid.');
+                        return;
+                    }
+                    if ($value->getSize() > 1048576) { // 1 MB
+                        $fail('Ukuran thumbnail maksimal 1 MB.');
+                    }
+                    $ext = strtolower($value->getClientOriginalExtension());
+                    if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                        $fail('Thumbnail harus berupa file gambar.');
+                    }
+                },
             ],
         ];
     }

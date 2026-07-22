@@ -152,7 +152,7 @@ export default function EditPrestasi() {
 
             toast.success(
                 isPublished
-                    ? "Prestasi berhasil dipublikasikan."
+                    ? (values.is_published ? "Prestasi berhasil diperbarui." : "Prestasi berhasil dipublikasikan.")
                     : "Prestasi dijadikan draft."
             );
             navigate("/prestasi");

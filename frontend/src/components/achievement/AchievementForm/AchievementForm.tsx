@@ -5,7 +5,6 @@ import {
     Input,
     Select,
     Textarea,
-    Switch,
     Button,
     FormField,
     FileUpload,
@@ -30,8 +29,6 @@ export default function AchievementForm({
     categories,
 
     loading = false,
-
-    submitText = "Simpan",
 
     previewUrl,
 
@@ -406,15 +403,24 @@ export default function AchievementForm({
 
                 {/* Tombol Publikasi Adaptif */}
                 {isPublished === true ? (
-                    /* Sudah published → tawarkan jadikan draft */
-                    <Button
-                        variant="danger"
-                        type="button"
-                        disabled={loading}
-                        onClick={() => onSubmit(false)}
-                    >
-                        {loading ? "Memproses..." : "Jadikan Draft"}
-                    </Button>
+                    <>
+                        {/* Sudah published → tawarkan jadikan draft */}
+                        <Button
+                            variant="danger"
+                            type="button"
+                            disabled={loading}
+                            onClick={() => onSubmit(false)}
+                        >
+                            {loading ? "Memproses..." : "Jadikan Draft"}
+                        </Button>
+                        <Button
+                            type="button"
+                            disabled={loading}
+                            onClick={() => onSubmit(true)}
+                        >
+                            {loading ? "Menyimpan..." : "Simpan Perubahan"}
+                        </Button>
+                    </>
                 ) : (
                     /* Draft / mode Tambah → tawarkan publikasikan */
                     <Button

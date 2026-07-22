@@ -20,8 +20,10 @@ class CategoryService
 {
     /**
      * Repository kategori.
+     *
+     * @var CategoryRepositoryInterface
      */
-    protected CategoryRepositoryInterface $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * Constructor Dependency Injection.

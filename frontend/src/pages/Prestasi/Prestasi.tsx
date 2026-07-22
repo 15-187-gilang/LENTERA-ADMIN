@@ -45,8 +45,6 @@ export default function Prestasi() {
 
         setPublishedFilter,
 
-        setFeaturedFilter,
-
         setSortFilter,
 
         deleteAchievement,
